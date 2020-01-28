@@ -1,0 +1,162 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %} Kardex {% endblock %}
+
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+			<div class="card white-content">
+				<div class="card-body">
+					<div class="row">
+        				<div class="col-md-8">
+								<h1 class="card-title"><b>{{producto.nombre}}</b></h1>
+						</div>
+						<div class="col-md-4" align=right>
+								{% if producto.empaquetado %}
+									<h2 class="card-title"><b>Unidades por paquete:</b> {{producto.unidadPaquete }} </h2>
+								{% endif %}
+						</div>	
+					</div>
+					<hr>
+					<div class="table-responsive">
+						<table class="table table-bordered " id="">
+							<thead class=" text-primary">
+								<th>
+
+								</th>
+								<th>
+
+								</th>
+								<td colspan = '3' align=center>
+								<h4><b>Entradas</b></h4>
+								</td>
+								<td colspan = '3' align=center>
+								<h4><b>Salidas</b></h4>
+								</td>
+								<td colspan = '1' align=center>
+
+								</td>
+							</thead>
+							<tbody>
+									<tr>
+										<td align=center>
+										<p><b><font size="3">ID</font></b></p>
+										</td>
+										<td align=center>
+										<p><b><font size="3">Fecha</font></b></p>
+										</td>
+										<td align=center>
+										<p><b><font size="3">Cantidad de paquetes</font></b></p>
+										</td>
+										<td align=center>
+										<p><b><font size="3">Unidades sueltas</font></b></p>
+										</td align=center>
+										<td align=center>
+										<p><b><font size="3">Unidades totales</font></b></p>
+										</td>
+										<td align=center>
+										<p><b><font size="3">Cantidad de paquetes</font></b></p>
+										</td>
+										<td align=center>
+										<p><b><font size="3">Unidades sueltas</font></b></p>
+										</td align=center>
+										<td align=center>
+										<p><b><font size="3">Unidades totales</font></b></p>
+										</td>
+										<td align=center>
+										<p><b><font size="3">Unidades en existencia</font></b></p>
+										</td>          
+									</tr>
+								{% for movimiento in movimientos|dictsort:'id'%}
+									{% if movimiento.tipo == False %}
+										<tr>  
+											<td align=center>
+												<p><font size="3">{{movimiento.id}}</font></p>
+											</td>
+											<td align=center>
+												<p><font size="3">{{movimiento.fecha}}</font></p>
+											</td>
+											<td align=center>
+												<p><font size="3">{{movimiento.paquetes}}</font></p>
+											</td>
+											<td align=center>
+												<p><font size="3">{{movimiento.unidadesSueltas}}</font></p>
+											</td>
+											<td align=center>
+												<p><font size="3">{{movimiento.unidades}}</font></p>
+											</td>
+											<td align=center>
+
+											</td>
+											<td align=center>
+
+											</td>
+											<td align=center>
+
+											</td>
+											<td align=center>
+												<p><font size="3">{{movimiento.existencias}}</font></p>
+											</td>       
+										</tr>
+										{% endif %}
+										{% if movimiento.tipo %}
+										<tr> 
+												<td align=center>
+												<p><font size="3">{{movimiento.id}}</font></p>
+												</td>
+												<td align=center>
+												<p><font size="3">{{movimiento.fecha}}</font></p>
+												</td>
+												<td align=center>
+
+												</td>
+												<td align=center>
+
+												</td>
+												<td align=center>
+
+												</td>
+												<td align=center>
+													<p><font size="3">{{movimiento.paquetes}}</font></p>
+												</td>
+												<td align=center>
+													<p><font size="3">{{movimiento.unidadesSueltas}}</font></p>
+												</td>
+												<td align=center>
+													<p><font size="3">{{movimiento.unidades}}</font></p>
+												</td>
+												
+												<td align=center>
+												<p><font size="3">{{movimiento.existencias}}</font></p>
+												</td>
+    
+										</tr>
+										{% endif %}
+									{% endfor %}
+										<tr> 
+											
+											<td align=right colspan='8'>
+												<p><b><font size="4">Total</font></b></p>
+											</td>
+												
+											<td align=center>
+												<p><b><font size="4"><b>{{producto.existencias}}</b></font></b></p>
+											</td>
+										</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>		  
+
+
+    
+
+{% endblock %}

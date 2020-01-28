@@ -31,7 +31,7 @@ class Movimiento(models.Model):
     paquetes = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     unidadesSueltas = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     unidades = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
-    existencias = models.DecimalField(max_digits=50, decimal_places=2, blank=False, default=0)
+    existencias = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     numero = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     
     

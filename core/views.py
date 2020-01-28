@@ -98,6 +98,9 @@ def NuevaEntrada(request, pk):
                 producto.existencias = producto.existencias + movimiento.unidades
                 producto.save()
                 
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
                 producto.paquetes = producto.existencias / producto.unidadPaquete
                 producto.sueltas = producto.existencias % producto.unidadPaquete
                 producto.save()
@@ -110,12 +113,15 @@ def NuevaEntrada(request, pk):
                 producto.existencias = producto.existencias + movimiento.unidades
                 producto.save()
                 
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
                 producto.paquetes = producto.paquetes + movimiento.paquetes
                 producto.sueltas = producto.existencias % producto.unidadPaquete
                 producto.save()
                 
                 
-            return redirect('core:inventario', 0)
+            return redirect('core:productos', 0)
     else:
         form = NuevaEntradaForm()
         form.initial['producto'] = pk
@@ -143,8 +149,11 @@ def NuevaEntrada2(request, pk):
             producto.existencias = producto.existencias + movimiento.unidades
             producto.sueltas = producto.sueltas + movimiento.unidadesSueltas
             producto.save()
+            
+            movimiento.existencias = producto.existencias
+            movimiento.save()
                 
-            return redirect('core:inventario', 0)
+            return redirect('core:productos', 0)
     else:
         form = NuevaEntradaForm2()
         form.initial['producto'] = pk
@@ -187,6 +196,9 @@ def NuevaSalida(request, pk):
                 producto.existencias = producto.existencias - movimiento.unidades
                 producto.save()
                 
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
                 producto.paquetes = producto.existencias / producto.unidadPaquete
                 producto.sueltas = producto.existencias % producto.unidadPaquete
                 producto.save()
@@ -199,15 +211,19 @@ def NuevaSalida(request, pk):
                 producto.existencias = producto.existencias - movimiento.unidades
                 producto.save()
                 
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
                 producto.paquetes = producto.paquetes - movimiento.paquetes
                 producto.sueltas = producto.existencias % producto.unidadPaquete
                 producto.save()
                 
                 
-            return redirect('core:inventario', 0)
+            return redirect('core:productos2', 0)
     else:
         form = NuevaSalidaForm()
         form.initial['producto'] = producto.id
+        form.initial['tipo'] = True
     
     return render(request, 'core/salida_form.html', {'form':form, 'producto':producto})
 
@@ -232,10 +248,21 @@ def NuevaSalida2(request, pk):
             producto.existencias = producto.existencias - movimiento.unidades
             producto.sueltas = producto.sueltas - movimiento.unidadesSueltas
             producto.save()
+            
+            movimiento.existencias = producto.existencias
+            movimiento.save()
                 
-            return redirect('core:inventario', 0)
+            return redirect('core:productos2', 0)
     else:
         form = NuevaSalidaForm2()
         form.initial['producto'] = producto.id
+        form.initial['tipo'] = True
     
     return render(request, 'core/salida_form.html', {'form':form, 'producto':producto})
+
+
+def Kardex(request, pk):
+    producto = Producto.objects.get(id = pk)
+    movimientos = Movimiento.objects.filter(producto = producto)
+
+    return render(request, 'core/kardex.html', {'movimientos':movimientos, 'producto':producto})

@@ -88,7 +88,7 @@
 							
 							<tbody>
 								{% for p in productos|dictsort:'categoria.id' %}
-									<tr id={{p.id}} onMouseOver="ResaltarFila({{p.id}});" onMouseOut="RestablecerFila({{p.id}}, '')" onClick="CrearEnlace('#');">
+									<tr id={{p.id}} onMouseOver="ResaltarFila({{p.id}});" onMouseOut="RestablecerFila({{p.id}}, '')" onClick="CrearEnlace('{% url 'core:kardex' p.id|slugify %}');">
 
 										<td align = center>
 											<p><b><font size="3">{{p.id}}</font></b></p>

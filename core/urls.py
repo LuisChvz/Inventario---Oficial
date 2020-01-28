@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, NuevaCategoria, NuevoProducto, NuevoProducto2, Indice, inventario, Productos, Productos2, NuevaEntrada, NuevaEntrada2, NuevaSalida, NuevaSalida2
+from .views import home, NuevaCategoria, NuevoProducto, NuevoProducto2, Indice, inventario, Productos, Productos2, NuevaEntrada, NuevaEntrada2, NuevaSalida, NuevaSalida2, Kardex
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -20,6 +20,7 @@ core_patterns = ([
     path('productos2/<int:categoria>', Productos2, name = 'productos2'),
     path('nuevasalida/<int:pk>', NuevaSalida, name = 'nuevasalida'),
     path('nuevasalida2/<int:pk>', NuevaSalida2, name = 'nuevasalida2'),
+    path('kardex/<int:pk>', Kardex, name = 'kardex'),
     
     
 ], 'core')
