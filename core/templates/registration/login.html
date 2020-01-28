@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4">
+			<div class="card white-content" align=center>
+              	<div class="card-header" align=center>
+              		<h2>Iniciar sesión</h2>
+                    <img class = "img-responsive" align="cent" src="{% static 'images/login.png' %}" width="100%" height="100%">
+				</div>
+				<div class="card-body" >
+                    
+                    <form action="" method="post">{% csrf_token %}
+                        {% if form.non_field_errors %}
+                            <h4 style="color:red">Usuario o contraseña incorrectos. </h4>
+                        {% endif %}
+                        
+                        <p>
+                            <input type="text" name="username" autofocus maxlength="254" required
+                            id="id_username" class="form-control" placeholder="Nombre de usuario"/>
+                        </p>
+                        <br><br>
+                        <p>
+                            <input type="password" name="password" required
+                            id="id_password" class="form-control" placeholder="Contraseña"/>
+                        </p>
+                        <hr>
+                        <p>
+
+                            <input type="submit" class="btn btn-danger btn-block" value="Iniciar sesión">
+                        </p>
+                    </form>				
+                </div>
+			</div>
+	    </div>
+        <div class="col-md-4"></div>
+	</div>
+</div>		  
+
+{% endblock %}

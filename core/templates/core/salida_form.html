@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %} Salida {% endblock %}
+
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-11">
+			<div class="card white-content">
+              	<div class="card-header">
+              		<h3>Agregar salida de <b>{{producto.nombre}}</b></h3>
+				</div>
+
+				<div class="card-body">
+					<form action="" method="post">{% csrf_token %}
+						{{ form.as_p }}
+						<hr>
+						<div class = "text-center">
+							<input type="submit" class = "btn btn-danger btn-block" value= "Registrar salida" />
+						</div>
+					</form>
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>		  
+
+
+    
+
+{% endblock %}

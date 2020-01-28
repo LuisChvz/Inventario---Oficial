@@ -1,0 +1,113 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %} Indice {% endblock %}
+
+{% block content %}
+
+
+<div class="content">			
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card white-content">
+							<div class="card-header">
+								<div class="row">
+						<div class="col-md-4">
+							<div class="btn-group" role="group">
+								<button id="btnGroupDrop1" type="button" class="btn btn-danger btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Filtrar por categoría
+								</button>
+								<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+										{% for categoria in categorias|dictsort:'nombre'  %}
+											
+												{% if categoria.id == filtro %}
+													<a href = "{% url 'core:indice' categoria.id|slugify%}" class="dropdown-item" style="background:#FECDCD; color:black"><b>{{categoria.nombre}}</b>	</a>
+												{% else %}
+													<a href = "{% url 'core:indice' categoria.id|slugify%}" class="dropdown-item">{{categoria.nombre}}</a>
+												{% endif %}
+										
+										{% endfor %}
+
+												{% if filtro == 0 %}
+													<a href = "{% url 'core:indice' 0|slugify%}" class="dropdown-item" style="background:#FECDCD; color:black"><b>Todos</b></a>
+												{% else %}
+													<a href = "{% url 'core:indice' 0|slugify%}" class="dropdown-item">Todos</a>
+												{% endif %} 
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="btn-group" role="group">
+								<a class="btn btn-danger" href="{% url 'core:nuevacategoria' %}" role="button">Agregar categoria</a>
+								<a class="btn btn-danger" href="{% url 'core:nuevoproducto' %}" role="button">Agregar producto por paquete</a>
+								<a class="btn btn-danger" href="{% url 'core:nuevoproducto2' %}" role="button">Agregar producto por unidad</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table tablesorter " id="">
+							<thead class=" text-primary">
+								<script langiage="javascript" type="text/javascript">
+									// RESALTAR LAS FILAS AL PASAR EL MOUSE
+									function ResaltarFila(id_fila) {
+									document.getElementById(id_fila).style.backgroundColor = '#FECDCD';
+									}
+									// RESTABLECER EL FONDO DE LAS FILAS AL QUITAR EL FOCO
+									function RestablecerFila(id_fila, color) {
+									document.getElementById(id_fila).style.backgroundColor = color;
+									}
+									// CONVERTIR LAS FILAS EN LINKS
+									function CrearEnlace(url) {
+									location.href=url;
+									}
+								</script>
+								<th>
+									
+								</th>
+								<th>
+									<h4>ID</h4>
+								</th>
+								<th>
+									<h4>Nombre</h4>
+								</th>
+								<th>
+									<h4>Categoria</h4>
+								</th>
+
+
+							</thead>
+							
+							<tbody>
+								{% for p in productos|dictsort:'categoria.id' %}
+									<tr id={{p.id}} onMouseOver="ResaltarFila({{p.id}});" onMouseOut="RestablecerFila({{p.id}}, '')" onClick="CrearEnlace('home');">
+										<td>
+									
+										</td>
+										<td >
+											<p><b><font size="4">{{p.id}}</font></b></p>
+										</td>
+										<td >
+											<p><b><font size="4">{{p.nombre}}</font></b></p>
+										</td>
+										<td >
+											<p><b><font size="4">{{p.categoria.nombre}}</font></b></p>
+										</td>
+
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+				      </div>
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>		  
+
+
+    
+
+{% endblock %}

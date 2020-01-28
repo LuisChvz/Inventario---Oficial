@@ -1,0 +1,139 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %} Seleccione un producto {% endblock %}
+
+{% block content %}
+
+
+<div class="content">
+		
+								
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card white-content">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md-10">
+							<h2>Seleccione un producto</h2>
+						</div>
+						<div class="col-md-2">
+							<div class="btn-group" role="group">
+								<button id="btnGroupDrop1" type="button" class="btn btn-danger btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Filtrar por categoría
+								</button>
+								<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+										{% for categoria in categorias|dictsort:'nombre'  %}
+											
+												{% if categoria.id == filtro %}
+													<a href = "{% url 'core:productos' categoria.id|slugify%}" class="dropdown-item" style="background:#FECDCD; color:black"><b>{{categoria.nombre}}</b>	</a>
+												{% else %}
+													<a href = "{% url 'core:productos' categoria.id|slugify%}" class="dropdown-item">{{categoria.nombre}}</a>
+												{% endif %}
+										
+										{% endfor %}
+
+												{% if filtro == 0 %}
+													<a href = "{% url 'core:productos' 0|slugify%}" class="dropdown-item" style="background:#FECDCD; color:black"><b>Todos</b></a>
+												{% else %}
+													<a href = "{% url 'core:productos' 0|slugify%}" class="dropdown-item">Todos</a>
+												{% endif %} 
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-resorted" id="">
+							<thead class=" text-primary" align = center>
+								<script langiage="javascript" type="text/javascript">
+									// RESALTAR LAS FILAS AL PASAR EL MOUSE
+									function ResaltarFila(id_fila) {
+									document.getElementById(id_fila).style.backgroundColor = '#FECDCD';
+									}
+									// RESTABLECER EL FONDO DE LAS FILAS AL QUITAR EL FOCO
+									function RestablecerFila(id_fila, color) {
+									document.getElementById(id_fila).style.backgroundColor = color;
+									}
+									// CONVERTIR LAS FILAS EN LINKS
+									function CrearEnlace(url) {
+									location.href=url;
+									}
+								</script>
+
+								<th width = "5%">
+									<h5>ID</h5>
+								</th>
+								<th width = "30%">
+									<h5>Nombre</h5>
+								</th>
+								<th width = "10%">
+									<h5>Paquetes</h5>
+								</th>
+								<th width = "10%">
+									<h5>U / paquete</h5>
+								</th>
+
+								<th width = "10%">
+									<h5>U. sueltas</h5>
+								</th>
+								<th width = "10%">
+									<h5>Cantidad total</h5>
+								</th>
+
+
+							</thead>
+							
+							<tbody>
+								{% for p in productos|dictsort:'categoria.id' %}
+								{% if p.empaquetado %}
+									<tr id={{p.id}} onMouseOver="ResaltarFila({{p.id}});" onMouseOut="RestablecerFila({{p.id}}, '')" onClick="CrearEnlace('{% url 'core:nuevaentrada' p.id|slugify %}');">
+								{% else %}
+									<tr id={{p.id}} onMouseOver="ResaltarFila({{p.id}});" onMouseOut="RestablecerFila({{p.id}}, '')" onClick="CrearEnlace('{% url 'core:nuevaentrada2' p.id|slugify %}');">
+								{% endif %}
+										<td align = center>
+											<p><b><font size="3">{{p.id}}</font></b></p>
+										</td>
+										<td >
+											<p><b><font size="3">{{p.nombre}}</font></b></p>
+										</td>
+										<td align = center>
+											{% if p.empaquetado %}
+												<p><b><font size="3">&nbsp;{{p.paquetes}}</font></b></p>
+											{% else %}
+												<p><b><font size="3">&nbsp;---</font></b></p>
+											{% endif %}
+										</td>
+											
+										<td align = center>
+											{% if p.empaquetado %}
+												<p><b><font size="3">&nbsp;{{p.unidadPaquete}}</font></b></p>
+											{% else %}
+												<p><b><font size="3">&nbsp;---</font></b></p>
+											{% endif %}
+										</td>
+										<td align = center>
+											<p><b><font size="3">&nbsp;{{p.sueltas}}</font></b></p>
+										</td>
+										<td align = center>
+											<p><b><font size="3">&nbsp;{{p.existencias}}</font></b></p>
+										</td>
+
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+				    </div>
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>		  
+
+
+    
+
+{% endblock %}
