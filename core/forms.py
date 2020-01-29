@@ -139,3 +139,38 @@ class NuevaSalidaForm2(forms.ModelForm):
         elif cantidad > producto.existencias:
             raise forms.ValidationError("Solamente hay " + str(producto.existencias) + " unidades en inventario. Por favor seleccione una cantidad menor o igual.")
         return producto
+    
+
+class EditarSalidaForm(forms.ModelForm):
+    
+    class Meta: 
+        opciones = [(False, "Paquete"), (True, "Unidad")]
+        model = Movimiento
+        fields = ['medida','cantidad', 'producto', 'tipo']
+        widgets = {
+            'medida': forms.Select(choices = opciones, attrs={'class':'form-control'}),
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'producto':forms.HiddenInput(),
+            'tipo':forms.HiddenInput(),
+
+        }
+        labels = {
+             'medida':'Seleccione la medida', 'cantidad':'Cantidad'
+        }
+        
+    
+        
+class EditarSalidaForm2(forms.ModelForm):
+    
+    class Meta: 
+        model = Movimiento
+        fields = ['cantidad', 'producto', 'tipo']
+        widgets = {
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'producto':forms.HiddenInput(),
+            'tipo':forms.HiddenInput(),
+        }
+        labels = {
+            'cantidad':'Cantidad'
+        }
+        

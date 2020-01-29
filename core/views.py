@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from braces.views import SuperuserRequiredMixin, LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .forms import NuevaCategoriaForm, NuevoProductoForm, NuevoProductoForm2, NuevaEntradaForm, NuevaEntradaForm2, NuevaSalidaForm, NuevaSalidaForm2
+from .forms import NuevaCategoriaForm, NuevoProductoForm, NuevoProductoForm2, NuevaEntradaForm, NuevaEntradaForm2, NuevaSalidaForm, NuevaSalidaForm2, EditarSalidaForm, EditarSalidaForm2
 from .models import Categoria, Producto, Movimiento
 
 
@@ -150,7 +150,7 @@ def NuevaEntrada(request, pk):
                 producto.save()
                 
                 
-            return redirect('core:productos', 0)
+            return redirect('core:kardex', producto.id)
     else:
         form = NuevaEntradaForm()
         form.initial['producto'] = pk
@@ -182,7 +182,7 @@ def NuevaEntrada2(request, pk):
             movimiento.existencias = producto.existencias
             movimiento.save()
                 
-            return redirect('core:productos', 0)
+            return redirect('core:kardex', producto.id)
     else:
         form = NuevaEntradaForm2()
         form.initial['producto'] = pk
@@ -260,7 +260,7 @@ def EditarEntrada(request, pk):
                 producto.save()
                 
                 
-            return redirect('core:productos', 0)
+            return redirect('core:kardex', producto.id)
     else:
         form = NuevaEntradaForm()
         form.initial['producto'] = movimiento.producto
@@ -301,7 +301,7 @@ def EditarEntrada2(request, pk):
             movimiento.existencias = producto.existencias
             movimiento.save()
                 
-            return redirect('core:productos', 0)
+            return redirect('core:kardex', producto.id)
     else:
         form = NuevaEntradaForm2()
         form.initial['producto'] = movimiento.producto
@@ -408,7 +408,7 @@ def NuevaSalida(request, pk):
                 producto.save()
                 
                 
-            return redirect('core:productos2', 0)
+            return redirect('core:kardex', producto.id)
     else:
         form = NuevaSalidaForm()
         form.initial['producto'] = producto.id
@@ -441,7 +441,7 @@ def NuevaSalida2(request, pk):
             movimiento.existencias = producto.existencias
             movimiento.save()
                 
-            return redirect('core:productos2', 0)
+            return redirect('core:kardex', producto.id)
     else:
         form = NuevaSalidaForm2()
         form.initial['producto'] = producto.id
@@ -452,6 +452,122 @@ def NuevaSalida2(request, pk):
 
     #Editar
     
+@login_required
+def EditarSalida(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)
+    producto = Producto.objects.get(id = movimiento.producto.id)
+    
+    if request.method == 'POST':
+        form = EditarSalidaForm(request.POST)
+        if form.is_valid():
+            
+            #Restaurando valores
+            if movimiento.medida:
+                
+                producto.existencias = producto.existencias + movimiento.unidades
+                producto.save()
+                        
+                producto.paquetes = producto.existencias / producto.unidadPaquete
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+                        
+            else:
+            
+                producto.existencias = producto.existencias + movimiento.unidades
+                producto.save()
+                        
+                producto.paquetes = producto.paquetes + movimiento.paquetes
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+            
+            #Guardando valores
+            
+            movimiento.medida = form.cleaned_data['medida']
+            movimiento.cantidad = form.cleaned_data['cantidad']
+            movimiento.save()
+            
+            if movimiento.medida:
+                movimiento.unidades = movimiento.cantidad
+                movimiento.paquetes = movimiento.cantidad/producto.unidadPaquete
+                movimiento.unidadesSueltas = movimiento.cantidad % producto.unidadPaquete
+                movimiento.save()
+                
+                producto.existencias = producto.existencias - movimiento.unidades
+                producto.save()
+                
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
+                producto.paquetes = producto.existencias / producto.unidadPaquete
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+                
+            else:
+                movimiento.paquetes = movimiento.cantidad
+                movimiento.unidades = movimiento.cantidad * producto.unidadPaquete
+                movimiento.save()
+                
+                producto.existencias = producto.existencias - movimiento.unidades
+                producto.save()
+                
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
+                producto.paquetes = producto.paquetes - movimiento.paquetes
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+                
+                
+            return redirect('core:kardex', producto.id)
+    else:
+        form = EditarSalidaForm()
+        form.initial['producto'] = producto.id
+        form.initial['tipo'] = True
+        form.initial['cantidad'] = movimiento.cantidad
+        form.initial['medida'] = movimiento.medida
+    
+    return render(request, 'core/salida_form.html', {'form':form, 'producto':producto})
+
+
+@login_required
+def EditarSalida2(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)
+    producto = Producto.objects.get(id = movimiento.producto.id)
+    
+    if request.method == 'POST':
+        form = EditarSalidaForm2(request.POST)
+        if form.is_valid():
+            form.save()
+            
+            #Restaurando valores
+            producto.existencias = producto.existencias + movimiento.unidades
+            producto.sueltas = producto.sueltas + movimiento.unidadesSueltas
+            producto.save()
+            
+            #Guardando valores
+            movimiento.cantidad = form.cleaned_data['cantidad']
+            movimiento.save()
+            
+
+            movimiento.unidades = movimiento.cantidad
+            movimiento.unidadesSueltas = movimiento.cantidad
+            movimiento.save()
+            
+            producto.existencias = producto.existencias - movimiento.unidades
+            producto.sueltas = producto.sueltas - movimiento.unidadesSueltas
+            producto.save()
+            
+            movimiento.existencias = producto.existencias
+            movimiento.save()
+                
+            return redirect('core:kardex', producto.id)
+    else:
+        form = EditarSalidaForm2()
+        form.initial['producto'] = producto.id
+        form.initial['tipo'] = True
+        form.initial['cantidad'] = movimiento.cantidad
+    
+    return render(request, 'core/salida_form.html', {'form':form, 'producto':producto})
     
 
     #Eliminar
