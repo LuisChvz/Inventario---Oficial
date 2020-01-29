@@ -15,15 +15,83 @@
 				</div>
 
 				<div class="card-body" align = center>
-					<h1>Universidad de El Salvador</h1><hr>
-					<h1>Unidad de Estudios Socioeconómicos</h1><hr>
-					<h1>Sistema de inventario</h1>
+					<h2>Unidad de Estudios Socioeconómicos</h2><hr>
+					<canvas id="chart"></canvas>
 				</div>
 			</div>
 	    </div>
 	</div>
 </div>		  
 
+<script type="text/javascript">
+    $(document).ready(function(){
+
+      var vector = [];
+      var nombres = [];
+
+      {% for c in categorias %}
+        
+          nombres.push("{{c.nombre}}");
+
+      {% endfor %}
+
+	  {% for ca in cantidades %}
+        
+          vector.push("{{ca}}");
+
+      {% endfor %}
+
+      var datos = {
+        labels : nombres,
+        datasets : [{
+          label : "",
+          backgroundColor : ["rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)", "rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)","rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)", "rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)","rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)", "rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)","rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)", "rgba(241, 148, 138,0.5)", "rgba(246, 128, 240,0.5)","rgba(159, 0, 255,0.5)","rgba(5, 0, 255 ,0.5)","rgba(0, 195, 255,0.5)","rgba(0, 255, 180,0.5)","rgba(55, 255, 0,0.3)", "rgba(225, 255, 0,0.4)", "rgba(255, 150, 0,0.4)"],
+          data : vector,
+        },
+        
+        ]
+      };
+
+
+      var canvas = document.getElementById('chart').getContext('2d');
+      window.bar = new Chart(canvas, {
+        type : "bar",
+        data : datos,
+        options : {
+          elements : {
+            rectangle : {
+              borderWidth : 1,
+              borderColor : "rgb(0,0,0)",
+              borderSkipped : 'bottom'
+            }
+          },
+          responsive : true,
+          title : {
+            display : true,
+            text : "Cantidad de productos por categoría"
+          }
+        }
+      });
+
+      setInterval(function(){
+        
+
+        $.each(datos.datasets, function(i, dataset){
+          dataset.data = newData[i];
+        });
+        window.bar.update();
+      }, 5000);
+
+      
+
+
+      function getRandom(){
+        return Math.round(Math.random() * 100);
+      }
+
+
+    });
+  </script>
 
     
 

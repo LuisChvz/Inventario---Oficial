@@ -13,9 +13,7 @@ from django import forms
 
 
 
-@login_required
-def home(request):
-    return render(request, "core/home.html")
+
 
 class NuevaCategoria(LoginRequiredMixin, CreateView):
     model = Categoria
@@ -665,3 +663,26 @@ class UpdateUsuario(LoginRequiredMixin, UpdateView):
         form.fields['password1'].widget = forms.PasswordInput(attrs={'class':'form-control mb-2', 'placeholder':'Contraseña: '})
         form.fields['password2'].widget = forms.PasswordInput(attrs={'class':'form-control mb-2', 'placeholder':'Confirmar contraseña: '})
         return form
+    
+
+@login_required
+def home(request):
+    categorias = Categoria.objects.all()
+    productos = Producto.objects.all()
+    i=0
+    cantidades = []
+    nombres = []
+    cantidad = Categoria.objects.filter().count
+    
+    for c in categorias:
+        nombres.append(c.nombre)
+        cuenta = 0
+        for p in productos:
+            if p.categoria == c:
+                cuenta = cuenta + p.existencias
+        
+        cantidades.append(cuenta)
+                
+        i = i + 1
+    
+    return render(request, 'core/home.html', {'categorias': categorias, 'productos': productos, 'nombres':nombres, 'cantidad':cantidad, 'cantidades':cantidades})
