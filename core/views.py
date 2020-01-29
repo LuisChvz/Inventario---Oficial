@@ -188,7 +188,54 @@ def NuevaEntrada2(request, pk):
     return render(request, 'core/entrada_form.html', {'form':form, 'producto':producto})
 
 
+def Confirmacion(request, pk):
+    movimiento = Movimiento.objects.get(id=pk)
+    return render(request, "core/confirmacion.html", {'movimiento':movimiento})
+    
 
+@login_required
+def EliminarEntrada(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)
+    producto = Producto.objects.get(id = movimiento.producto.id)
+            
+    if movimiento.medida:
+                
+        producto.existencias = producto.existencias - movimiento.unidades
+        producto.save()
+                
+        producto.paquetes = producto.existencias / producto.unidadPaquete
+        producto.sueltas = producto.existencias % producto.unidadPaquete
+        producto.save()
+                
+    else:
+                
+        producto.existencias = producto.existencias - movimiento.unidades
+        producto.save()
+                
+        producto.paquetes = producto.paquetes - movimiento.paquetes
+        producto.sueltas = producto.existencias % producto.unidadPaquete
+        producto.save()
+        
+    movimiento.delete()
+                         
+    return redirect('core:kardex', producto.id)
+
+
+@login_required
+def EliminarEntrada2(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)
+    producto = Producto.objects.get(id = movimiento.producto.id)
+            
+    producto.existencias = producto.existencias - movimiento.unidades
+    producto.sueltas = producto.sueltas - movimiento.unidadesSueltas
+    producto.save()
+            
+    movimiento.delete()
+                
+    return redirect('core:kardex', producto.id)
+    
+    
+    
 #Salidas
 
 @login_required
@@ -275,6 +322,49 @@ def NuevaSalida2(request, pk):
         form.initial['tipo'] = True
     
     return render(request, 'core/salida_form.html', {'form':form, 'producto':producto})
+
+
+@login_required
+def EliminarSalida(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)       
+    producto = Producto.objects.get(id = movimiento.producto.id)
+
+    if movimiento.medida:
+                
+        producto.existencias = producto.existencias + movimiento.unidades
+        producto.save()
+                
+        producto.paquetes = producto.existencias / producto.unidadPaquete
+        producto.sueltas = producto.existencias % producto.unidadPaquete
+        producto.save()
+                
+    else:
+     
+        producto.existencias = producto.existencias + movimiento.unidades
+        producto.save()
+                
+        producto.paquetes = producto.paquetes + movimiento.paquetes
+        producto.sueltas = producto.existencias % producto.unidadPaquete
+        producto.save()
+        
+    movimiento.delete()        
+                
+    return redirect('core:kardex', producto.id)
+
+
+@login_required
+def EliminarSalida2(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)    
+    producto = Producto.objects.get(id = movimiento.producto.id)
+            
+    producto.existencias = producto.existencias + movimiento.unidades
+    producto.sueltas = producto.sueltas + movimiento.unidadesSueltas
+    producto.save()
+            
+    movimiento.delete()
+                
+    return redirect('core:kardex', producto.id)
+    
 
 
 #Inventario

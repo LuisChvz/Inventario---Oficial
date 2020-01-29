@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import home, NuevaCategoria, NuevoProducto, NuevoProducto2, Indice, inventario, Productos, Productos2, NuevaEntrada, NuevaEntrada2, NuevaSalida, NuevaSalida2, Kardex, EliminarProducto, EditarProducto, EditarProducto2
+from .views import home, NuevaCategoria, NuevoProducto, NuevoProducto2, Indice, inventario, Productos, Productos2, Kardex, EliminarProducto, EditarProducto, EditarProducto2
+from .views import NuevaEntrada, NuevaEntrada2, NuevaSalida, NuevaSalida2, EliminarEntrada, EliminarEntrada2, Confirmacion, EliminarSalida, EliminarSalida2
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,10 +25,15 @@ core_patterns = ([
     #Entradas
     path('nuevaentrada/<int:pk>', NuevaEntrada, name = 'nuevaentrada'),
     path('nuevaentrada2/<int:pk>', NuevaEntrada2, name = 'nuevaentrada2'),
+    path('eliminarentrada/<int:pk>', EliminarEntrada, name = 'eliminarentrada'),
+    path('eliminarentrada2/<int:pk>', EliminarEntrada2, name = 'eliminarentrada2'),
+    path('confirmacion/<int:pk>', Confirmacion, name = 'confirmacion'),
     
     #Salidas
     path('nuevasalida/<int:pk>', NuevaSalida, name = 'nuevasalida'),
     path('nuevasalida2/<int:pk>', NuevaSalida2, name = 'nuevasalida2'),
+    path('eliminarsalida/<int:pk>', EliminarSalida, name = 'eliminarsalida'),
+    path('eliminarsalida2/<int:pk>', EliminarSalida2, name = 'eliminarsalida2'),
     
     #Inventario
     path('kardex/<int:pk>', Kardex, name = 'kardex'),

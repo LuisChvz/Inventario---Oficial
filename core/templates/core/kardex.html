@@ -32,44 +32,49 @@
 
 								</th>
 								<td colspan = '3' align=center>
-								<h4><b>Entradas</b></h4>
+									<p><b><font size="5">Entradas</font></b></p>
 								</td>
 								<td colspan = '3' align=center>
-								<h4><b>Salidas</b></h4>
+									<p><b><font size="5">Salidas</font></b></p>
 								</td>
-								<td colspan = '1' align=center>
 
+								<td colspan='3'>
+											
 								</td>
 							</thead>
 							<tbody>
 									<tr>
-										<td align=center>
-										<p><b><font size="3">ID</font></b></p>
+										<td align=center width = "5%">
+											<p><b><font size="3">ID</font></b></p>
 										</td>
-										<td align=center>
-										<p><b><font size="3">Fecha</font></b></p>
+										<td align=center width = "10%">
+											<p><b><font size="3">Fecha</font></b></p>
 										</td>
-										<td align=center>
-										<p><b><font size="3">Cantidad de paquetes</font></b></p>
+										<td align=center width = "10%">
+											<p><b><font size="3">Cantidad de paquetes</font></b></p>
 										</td>
-										<td align=center>
-										<p><b><font size="3">Unidades sueltas</font></b></p>
-										</td align=center>
-										<td align=center>
-										<p><b><font size="3">Unidades totales</font></b></p>
+										<td align=center width = "10%">
+											<p><b><font size="3">Unidades sueltas</font></b></p>
 										</td>
-										<td align=center>
-										<p><b><font size="3">Cantidad de paquetes</font></b></p>
+										<td align=center width = "10%">
+											<p><b><font size="3">Unidades totales</font></b></p>
 										</td>
-										<td align=center>
-										<p><b><font size="3">Unidades sueltas</font></b></p>
-										</td align=center>
-										<td align=center>
-										<p><b><font size="3">Unidades totales</font></b></p>
+										<td align=center width = "10%">
+											<p><b><font size="3">Cantidad de paquetes</font></b></p>
 										</td>
-										<td align=center>
-										<p><b><font size="3">Unidades en existencia</font></b></p>
-										</td>          
+										<td align=center width = "10%">
+											<p><b><font size="3">Unidades sueltas</font></b></p>
+										</td>
+										<td align=center width = "10%">
+											<p><b><font size="3">Unidades totales</font></b></p>
+										</td>
+										<td align=center width = "15%">
+											<p><b><font size="3">Unidades en existencia</font></b></p>
+										</td>
+										<td colspan ='2' width = "10%">
+											
+										</td>
+										                
 									</tr>
 								{% for movimiento in movimientos|dictsort:'id'%}
 									{% if movimiento.tipo == False %}
@@ -100,7 +105,17 @@
 											</td>
 											<td align=center>
 												<p><font size="3">{{movimiento.existencias}}</font></p>
-											</td>       
+											</td>
+											<td align = center>
+												<a href="{% url 'core:confirmacion' movimiento.id|slugify%}" >
+													<i class="tim-icons icon-pencil" style= "color:black"></i>                            
+												</a>
+											</td>
+											<td align = center>
+												<a href="{% url 'core:confirmacion' movimiento.id|slugify%}" >
+													<i class="tim-icons icon-trash-simple" style= "color:red"></i>                            
+												</a>
+											</td>    
 										</tr>
 										{% endif %}
 										{% if movimiento.tipo %}
@@ -133,18 +148,32 @@
 												<td align=center>
 												<p><font size="3">{{movimiento.existencias}}</font></p>
 												</td>
+												<td align = center>
+													<a href="{% url 'core:confirmacion' movimiento.id|slugify%}" >
+														<i class="tim-icons icon-pencil" style= "color:black"></i>                            
+													</a>
+												</td>
+												<td align = center>
+													<a href="{% url 'core:confirmacion' movimiento.id|slugify%}" >
+														<i class="tim-icons icon-trash-simple" style= "color:red"></i>                            
+													</a>
+												</td>
     
 										</tr>
 										{% endif %}
 									{% endfor %}
 										<tr> 
-											
-											<td align=right colspan='8'>
+											<td colspan='6' bordered="white">
+
+											</td>
+											<td align=center colspan='2'>
 												<p><b><font size="4">Total</font></b></p>
 											</td>
 												
 											<td align=center>
 												<p><b><font size="4"><b>{{producto.existencias}}</b></font></b></p>
+											</td>
+											<td colspan='2'>
 											</td>
 										</tr>
 							</tbody>

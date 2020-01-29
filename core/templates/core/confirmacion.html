@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %} Eliminar {% endblock %}
+
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-11">
+			<div class="card white-content">
+
+				<div class="card-body">
+				
+  
+                        <form action="" method="post">{% csrf_token %}
+							  <hr>
+                              <h3 align = 'center'>¿Estás seguro de que quieres eliminar el movimiento realizado el <b>{{movimiento.fecha}}</b>?</h3>
+							  <hr>
+							  <br>
+							  {% if movimiento.tipo %}
+								{% if movimiento.producto.empaquetado %}
+									<a class = "btn btn-danger btn-block" href = "{% url 'core:eliminarsalida' movimiento.id|slugify%}">Sí, eliminar</a>
+								{% else%}
+									<a class = "btn btn-danger btn-block" href = "{% url 'core:eliminarsalida2' movimiento.id|slugify%}">Sí, eliminar</a>
+								{% endif %}
+							  {% else %}
+								{% if movimiento.producto.empaquetado %}
+									<a class = "btn btn-danger btn-block" href = "{% url 'core:eliminarentrada' movimiento.id|slugify%}">Sí, eliminar</a>
+								{% else%}
+									<a class = "btn btn-danger btn-block" href = "{% url 'core:eliminarentrada2' movimiento.id|slugify%}">Sí, eliminar</a>
+								{% endif %}
+							  {% endif %}
+							  <hr>
+                        </form>
+      
+                        
+
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>		  
+
+
+    
+
+{% endblock %}
+
+
+
+
