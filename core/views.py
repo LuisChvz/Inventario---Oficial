@@ -104,6 +104,8 @@ def Productos2(request, categoria):
 
 #Entradas
 
+    #Crear
+    
 @login_required
 def NuevaEntrada(request, pk):
     producto = Producto.objects.get(id = pk)
@@ -188,6 +190,128 @@ def NuevaEntrada2(request, pk):
     return render(request, 'core/entrada_form.html', {'form':form, 'producto':producto})
 
 
+    #Editar
+    
+@login_required
+def EditarEntrada(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)
+    producto = Producto.objects.get(id = movimiento.producto.id)
+    
+    if request.method == 'POST':
+        form = NuevaEntradaForm(request.POST)
+        if form.is_valid():
+            
+            #Restaurando valores
+            if movimiento.medida:
+                        
+                producto.existencias = producto.existencias - movimiento.unidades
+                producto.save()
+                        
+                producto.paquetes = producto.existencias / producto.unidadPaquete
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+                        
+            else:
+                        
+                producto.existencias = producto.existencias - movimiento.unidades
+                producto.save()
+                        
+                producto.paquetes = producto.paquetes - movimiento.paquetes
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+            
+
+            #Guardando movimiento
+            
+            movimiento.medida = form.cleaned_data['medida']
+            movimiento.cantidad = form.cleaned_data['cantidad']
+            movimiento.save()
+            
+            
+            if movimiento.medida:
+                movimiento.unidades = movimiento.cantidad
+                movimiento.paquetes = movimiento.cantidad/producto.unidadPaquete
+                movimiento.unidadesSueltas = movimiento.cantidad % producto.unidadPaquete
+                movimiento.save()
+                
+                producto.existencias = producto.existencias + movimiento.unidades
+                producto.save()
+                
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
+                producto.paquetes = producto.existencias / producto.unidadPaquete
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+                
+            else:
+                movimiento.paquetes = movimiento.cantidad
+                movimiento.unidades = movimiento.cantidad * producto.unidadPaquete
+                movimiento.save()
+                
+                producto.existencias = producto.existencias + movimiento.unidades
+                producto.save()
+                
+                movimiento.existencias = producto.existencias
+                movimiento.save()
+                
+                producto.paquetes = producto.paquetes + movimiento.paquetes
+                producto.sueltas = producto.existencias % producto.unidadPaquete
+                producto.save()
+                
+                
+            return redirect('core:productos', 0)
+    else:
+        form = NuevaEntradaForm()
+        form.initial['producto'] = movimiento.producto
+        form.initial['medida'] = movimiento.medida
+        form.initial['cantidad'] = movimiento.cantidad
+    
+    return render(request, 'core/entrada_form.html', {'form':form, 'producto':producto})
+
+
+@login_required
+def EditarEntrada2(request, pk):
+    movimiento = Movimiento.objects.get(id = pk)
+    producto = Producto.objects.get(id = movimiento.producto.id)
+    
+    if request.method == 'POST':
+        form = NuevaEntradaForm2(request.POST)
+        if form.is_valid():
+            
+            #Restaurando valores
+            producto.existencias = producto.existencias - movimiento.unidades
+            producto.sueltas = producto.sueltas - movimiento.unidadesSueltas
+            producto.save()
+
+            #Guardando movimiento
+            
+            movimiento.cantidad = form.cleaned_data['cantidad']
+            movimiento.save()
+            
+
+            movimiento.unidades = movimiento.cantidad
+            movimiento.unidadesSueltas = movimiento.cantidad
+            movimiento.save()
+            
+            producto.existencias = producto.existencias + movimiento.unidades
+            producto.sueltas = producto.sueltas + movimiento.unidadesSueltas
+            producto.save()
+            
+            movimiento.existencias = producto.existencias
+            movimiento.save()
+                
+            return redirect('core:productos', 0)
+    else:
+        form = NuevaEntradaForm2()
+        form.initial['producto'] = movimiento.producto
+        form.initial['cantidad'] = movimiento.cantidad
+        
+    
+    return render(request, 'core/entrada_form.html', {'form':form, 'producto':producto})
+
+    #Eliminar
+
 def Confirmacion(request, pk):
     movimiento = Movimiento.objects.get(id=pk)
     return render(request, "core/confirmacion.html", {'movimiento':movimiento})
@@ -237,6 +361,8 @@ def EliminarEntrada2(request, pk):
     
     
 #Salidas
+
+    #Crear
 
 @login_required
 def NuevaSalida(request, pk):
@@ -323,6 +449,12 @@ def NuevaSalida2(request, pk):
     
     return render(request, 'core/salida_form.html', {'form':form, 'producto':producto})
 
+
+    #Editar
+    
+    
+
+    #Eliminar
 
 @login_required
 def EliminarSalida(request, pk):

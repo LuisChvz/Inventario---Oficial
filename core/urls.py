@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import home, NuevaCategoria, NuevoProducto, NuevoProducto2, Indice, inventario, Productos, Productos2, Kardex, EliminarProducto, EditarProducto, EditarProducto2
-from .views import NuevaEntrada, NuevaEntrada2, NuevaSalida, NuevaSalida2, EliminarEntrada, EliminarEntrada2, Confirmacion, EliminarSalida, EliminarSalida2
+from .views import NuevaEntrada, NuevaEntrada2, NuevaSalida, NuevaSalida2, EliminarEntrada, EliminarEntrada2, Confirmacion, EliminarSalida, EliminarSalida2, EditarEntrada, EditarEntrada2
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -28,6 +28,8 @@ core_patterns = ([
     path('eliminarentrada/<int:pk>', EliminarEntrada, name = 'eliminarentrada'),
     path('eliminarentrada2/<int:pk>', EliminarEntrada2, name = 'eliminarentrada2'),
     path('confirmacion/<int:pk>', Confirmacion, name = 'confirmacion'),
+    path('editarentrada/<int:pk>', EditarEntrada, name = 'editarentrada'),
+    path('editarentrada2/<int:pk>', EditarEntrada2, name = 'editarentrada2'),
     
     #Salidas
     path('nuevasalida/<int:pk>', NuevaSalida, name = 'nuevasalida'),

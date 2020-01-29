@@ -107,9 +107,15 @@
 												<p><font size="3">{{movimiento.existencias}}</font></p>
 											</td>
 											<td align = center>
-												<a href="{% url 'core:confirmacion' movimiento.id|slugify%}" >
-													<i class="tim-icons icon-pencil" style= "color:black"></i>                            
-												</a>
+												{% if movimiento.producto.empaquetado %}
+													<a href="{% url 'core:editarentrada' movimiento.id|slugify%}" >
+														<i class="tim-icons icon-pencil" style= "color:black"></i>                            
+													</a>
+												{% else %}
+													<a href="{% url 'core:editarentrada2' movimiento.id|slugify%}" >
+														<i class="tim-icons icon-pencil" style= "color:black"></i>                            
+													</a>
+												{% endif %}
 											</td>
 											<td align = center>
 												<a href="{% url 'core:confirmacion' movimiento.id|slugify%}" >
