@@ -57,7 +57,7 @@ class NuevaEntradaForm(forms.ModelForm):
         fields = ['medida','cantidad', 'producto']
         widgets = {
             'medida': forms.Select(choices = opciones, attrs={'class':'form-control'}),
-            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
             'producto':forms.HiddenInput(),
         }
         labels = {
@@ -70,7 +70,7 @@ class NuevaEntradaForm2(forms.ModelForm):
         model = Movimiento
         fields = ['cantidad', 'producto']
         widgets = {
-            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
             'producto':forms.HiddenInput(),
         }
         labels = {
@@ -86,7 +86,7 @@ class NuevaSalidaForm(forms.ModelForm):
         fields = ['medida','cantidad', 'producto', 'tipo']
         widgets = {
             'medida': forms.Select(choices = opciones, attrs={'class':'form-control'}),
-            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
             'producto':forms.HiddenInput(),
             'tipo':forms.HiddenInput(),
 
@@ -121,7 +121,7 @@ class NuevaSalidaForm2(forms.ModelForm):
         model = Movimiento
         fields = ['cantidad', 'producto', 'tipo']
         widgets = {
-            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
             'producto':forms.HiddenInput(),
             'tipo':forms.HiddenInput(),
         }
@@ -149,7 +149,7 @@ class EditarSalidaForm(forms.ModelForm):
         fields = ['medida','cantidad', 'producto', 'tipo']
         widgets = {
             'medida': forms.Select(choices = opciones, attrs={'class':'form-control'}),
-            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
             'producto':forms.HiddenInput(),
             'tipo':forms.HiddenInput(),
 
@@ -166,7 +166,7 @@ class EditarSalidaForm2(forms.ModelForm):
         model = Movimiento
         fields = ['cantidad', 'producto', 'tipo']
         widgets = {
-            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'0'}),
+            'cantidad': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'1'}),
             'producto':forms.HiddenInput(),
             'tipo':forms.HiddenInput(),
         }

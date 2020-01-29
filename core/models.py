@@ -27,7 +27,7 @@ class Movimiento(models.Model):
     fecha = models.DateField(auto_now=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     medida = models.BooleanField(default=False)
-    cantidad = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
+    cantidad = models.IntegerField(null = False, validators=[MinValueValidator(1)])
     paquetes = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     unidadesSueltas = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
     unidades = models.IntegerField(default = 0, validators=[MinValueValidator(0)])
