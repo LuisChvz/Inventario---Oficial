@@ -174,3 +174,16 @@ class EditarSalidaForm2(forms.ModelForm):
             'cantidad':'Cantidad'
         }
         
+        
+class NuevoUserForm(UserCreationForm):
+    
+    class Meta: 
+        model = User
+        fields = ['username', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Usuario:'}),
+
+        }
+        labels = {
+            'username':'','password1':'','password2':''
+        }

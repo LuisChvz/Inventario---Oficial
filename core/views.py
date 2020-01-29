@@ -3,11 +3,13 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from braces.views import SuperuserRequiredMixin, LoginRequiredMixin
+from braces.views import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .forms import NuevaCategoriaForm, NuevoProductoForm, NuevoProductoForm2, NuevaEntradaForm, NuevaEntradaForm2, NuevaSalidaForm, NuevaSalidaForm2, EditarSalidaForm, EditarSalidaForm2
+from .forms import NuevaCategoriaForm, NuevoProductoForm, NuevoProductoForm2, NuevaEntradaForm, NuevaEntradaForm2, NuevaSalidaForm, NuevaSalidaForm2, EditarSalidaForm, EditarSalidaForm2, NuevoUserForm
 from .models import Categoria, Producto, Movimiento
+from django.contrib.auth.models import User
+from django import forms
 
 
 
@@ -15,7 +17,7 @@ from .models import Categoria, Producto, Movimiento
 def home(request):
     return render(request, "core/home.html")
 
-class NuevaCategoria(SuperuserRequiredMixin, CreateView):
+class NuevaCategoria(LoginRequiredMixin, CreateView):
     model = Categoria
     form_class = NuevaCategoriaForm
     success_url = reverse_lazy('core:indice', args=[0])
@@ -635,3 +637,31 @@ def Kardex(request, pk):
     movimientos = Movimiento.objects.filter(producto = producto)
 
     return render(request, 'core/kardex.html', {'movimientos':movimientos, 'producto':producto})
+
+
+#Usuarios
+class NuevoUsuario(LoginRequiredMixin, CreateView):
+    model = User
+    form_class = NuevoUserForm
+    template_name = 'core/user_form.html'
+    success_url = reverse_lazy('home')
+    
+    def get_form(self, form_class = None):
+        form = super(NuevoUsuario, self).get_form()
+
+        form.fields['password1'].widget = forms.PasswordInput(attrs={'class':'form-control mb-2', 'placeholder':'Contraseña: '})
+        form.fields['password2'].widget = forms.PasswordInput(attrs={'class':'form-control mb-2', 'placeholder':'Confirmar contraseña: '})
+        return form
+    
+class UpdateUsuario(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = NuevoUserForm
+    template_name = 'core/user_update.html'
+    success_url = reverse_lazy('home')
+    
+    def get_form(self, form_class = None):
+        form = super(UpdateUsuario, self).get_form()
+
+        form.fields['password1'].widget = forms.PasswordInput(attrs={'class':'form-control mb-2', 'placeholder':'Contraseña: '})
+        form.fields['password2'].widget = forms.PasswordInput(attrs={'class':'form-control mb-2', 'placeholder':'Confirmar contraseña: '})
+        return form

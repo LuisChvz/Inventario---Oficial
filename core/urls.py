@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import home, NuevaCategoria, NuevoProducto, NuevoProducto2, Indice, inventario, Productos, Productos2, Kardex, EliminarProducto, EditarProducto, EditarProducto2
 from .views import NuevaEntrada, NuevaEntrada2, NuevaSalida, NuevaSalida2, EliminarEntrada, EliminarEntrada2, Confirmacion, EliminarSalida, EliminarSalida2, EditarEntrada, EditarEntrada2, EditarSalida, EditarSalida2
+from .views import NuevoUsuario, UpdateUsuario
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -43,6 +44,9 @@ core_patterns = ([
     path('kardex/<int:pk>', Kardex, name = 'kardex'),
     path('inventario/<int:categoria>', inventario, name = 'inventario'),
     
+    #Usuario
+    path('nuevousuario/', NuevoUsuario.as_view(), name='nuevousuario'),
+    path('updateusuario/<int:pk>', UpdateUsuario.as_view(), name='updateusuario'),
     
     
 ], 'core')

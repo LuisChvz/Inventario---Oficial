@@ -103,12 +103,12 @@
 							<ul class="dropdown-menu dropdown-navbar">
 								
 									<li class="nav-link">
-										<a href="#" class="nav-item dropdown-item">
+										<a href="{% url 'core:updateusuario' request.user.id|slugify%}" class="nav-item dropdown-item">
 											EDITAR USUARIO
 										</a>
 									</li>
 									<li class="nav-link">
-										<a href="#" class="nav-item dropdown-item">
+										<a href="{% url 'core:nuevousuario'%}" class="nav-item dropdown-item">
 											AGREGAR USUARIO
 										</a>
 									</li>
