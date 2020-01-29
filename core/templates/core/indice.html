@@ -11,8 +11,7 @@
 					<div class="col-md-12">
 						<div class="card white-content">
 							<div class="card-header">
-								<div class="row">
-						<div class="col-md-4">
+								
 							<div class="btn-group" role="group">
 								<button id="btnGroupDrop1" type="button" class="btn btn-danger btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Filtrar por categoría
@@ -36,34 +35,23 @@
 												{% endif %} 
 								</div>
 							</div>
-						</div>
-						<div class="col-md-8">
+						
 							<div class="btn-group" role="group">
-								<a class="btn btn-danger" href="{% url 'core:nuevacategoria' %}" role="button">Agregar categoria</a>
-								<a class="btn btn-danger" href="{% url 'core:nuevoproducto' %}" role="button">Agregar producto por paquete</a>
-								<a class="btn btn-danger" href="{% url 'core:nuevoproducto2' %}" role="button">Agregar producto por unidad</a>
+								<button id="btnGroupDrop1" type="button" class="btn btn-danger btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Agregar
+								</button>
+								<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+									<a class="dropdown-item" href="{% url 'core:nuevacategoria' %}" role="button">Agregar categoria</a>
+									<a class="dropdown-item" href="{% url 'core:nuevoproducto' %}" role="button">Agregar producto por paquete</a>
+									<a class="dropdown-item" href="{% url 'core:nuevoproducto2' %}" role="button">Agregar producto por unidad</a>
+								</div>
 							</div>
-						</div>
-					</div>
+						
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
 						<table class="table tablesorter " id="">
 							<thead class=" text-primary">
-								<script langiage="javascript" type="text/javascript">
-									// RESALTAR LAS FILAS AL PASAR EL MOUSE
-									function ResaltarFila(id_fila) {
-									document.getElementById(id_fila).style.backgroundColor = '#FECDCD';
-									}
-									// RESTABLECER EL FONDO DE LAS FILAS AL QUITAR EL FOCO
-									function RestablecerFila(id_fila, color) {
-									document.getElementById(id_fila).style.backgroundColor = color;
-									}
-									// CONVERTIR LAS FILAS EN LINKS
-									function CrearEnlace(url) {
-									location.href=url;
-									}
-								</script>
 								<th>
 									
 								</th>
@@ -76,13 +64,19 @@
 								<th>
 									<h4>Categoria</h4>
 								</th>
+								<th>
+									
+								</th>
+								<th>
+									
+								</th>
 
 
 							</thead>
 							
 							<tbody>
 								{% for p in productos|dictsort:'categoria.id' %}
-									<tr id={{p.id}} onMouseOver="ResaltarFila({{p.id}});" onMouseOut="RestablecerFila({{p.id}}, '')" onClick="CrearEnlace('home');">
+									<tr>
 										<td>
 									
 										</td>
@@ -94,6 +88,23 @@
 										</td>
 										<td >
 											<p><b><font size="4">{{p.categoria.nombre}}</font></b></p>
+										</td>
+										
+										<td>
+											{% if p.empaquetado %}
+												<a href="{% url 'core:editarproducto' p.id|slugify%}" >
+													<i class="tim-icons icon-pencil" style= "color:black"></i>                            
+												</a>
+											{% else %}
+												<a href="{% url 'core:editarproducto2' p.id|slugify%}" >
+													<i class="tim-icons icon-pencil" style= "color:black"></i>                            
+												</a>
+											{% endif %}
+										</td>
+										<td>
+											<a href="{% url 'core:eliminarproducto' p.id|slugify%}" >
+												<i class="tim-icons icon-trash-simple" style= "color:red"></i>                            
+											</a>
 										</td>
 
 									</tr>

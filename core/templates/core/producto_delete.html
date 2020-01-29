@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %} Eliminar {% endblock %}
+
+{% block content %}
+
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-11">
+			<div class="card white-content">
+
+				<div class="card-body">
+				
+  
+                        <form action="" method="post">{% csrf_token %}
+							  <hr>
+                              <h3 align = 'center'>¿Estás seguro de que quieres eliminar el producto <b>{{producto.nombre}}</b>?</h3>
+							  <hr>
+							  <br>
+                              <input type="submit" class = "btn btn-danger btn-block" value="Sí, eliminar"/>
+							  <hr>
+                        </form>
+      
+                        
+
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>		  
+
+
+    
+
+{% endblock %}
+
+
+
+

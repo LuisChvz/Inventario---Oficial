@@ -21,6 +21,8 @@ class NuevaCategoria(SuperuserRequiredMixin, CreateView):
     success_url = reverse_lazy('core:indice', args=[0])
 
 
+#Productos
+
 class NuevoProducto(LoginRequiredMixin, CreateView):
     model = Producto
     form_class = NuevoProductoForm
@@ -35,6 +37,29 @@ class NuevoProducto(LoginRequiredMixin, CreateView):
 class NuevoProducto2(LoginRequiredMixin, CreateView):
     model = Producto
     form_class = NuevoProductoForm2
+    success_url = reverse_lazy('core:indice', args=[0])
+    
+    
+class EditarProducto(LoginRequiredMixin, UpdateView):
+    model = Producto
+    form_class = NuevoProductoForm
+    success_url = reverse_lazy('core:indice', args=[0])
+    
+    def get_initial(self):
+        return {
+            'paquetes':0,
+            'empaquetado':True,
+        }
+    
+class EditarProducto2(LoginRequiredMixin, UpdateView):
+    model = Producto
+    form_class = NuevoProductoForm2
+    success_url = reverse_lazy('core:indice', args=[0])
+    
+    
+class EliminarProducto(LoginRequiredMixin, DeleteView):
+    model = Producto
+    template_name = 'core/producto_delete.html'
     success_url = reverse_lazy('core:indice', args=[0])
  
     
@@ -52,19 +77,6 @@ def Indice(request, categoria):
 
 
 @login_required
-def inventario(request, categoria):
-    filtro = categoria
-    categorias = Categoria.objects.all()
-    
-    if filtro == 0:
-        productos = Producto.objects.all()
-    else:
-        productos = Producto.objects.filter(categoria = filtro)
-        
-    return render(request, 'core/inventario.html', {'categorias': categorias, 'productos': productos, 'filtro':filtro})
-    
-
-@login_required
 def Productos(request, categoria):
     filtro = categoria
     categorias = Categoria.objects.all()
@@ -76,6 +88,21 @@ def Productos(request, categoria):
         
     return render(request, 'core/productos.html', {'categorias': categorias, 'productos': productos, 'filtro':filtro})
 
+
+@login_required
+def Productos2(request, categoria):
+    filtro = categoria
+    categorias = Categoria.objects.all()
+    
+    if filtro == 0:
+        productos = Producto.objects.all()
+    else:
+        productos = Producto.objects.filter(categoria = filtro)
+        
+    return render(request, 'core/productos2.html', {'categorias': categorias, 'productos': productos, 'filtro':filtro})
+
+
+#Entradas
 
 @login_required
 def NuevaEntrada(request, pk):
@@ -162,18 +189,7 @@ def NuevaEntrada2(request, pk):
 
 
 
-@login_required
-def Productos2(request, categoria):
-    filtro = categoria
-    categorias = Categoria.objects.all()
-    
-    if filtro == 0:
-        productos = Producto.objects.all()
-    else:
-        productos = Producto.objects.filter(categoria = filtro)
-        
-    return render(request, 'core/productos2.html', {'categorias': categorias, 'productos': productos, 'filtro':filtro})
-
+#Salidas
 
 @login_required
 def NuevaSalida(request, pk):
@@ -259,6 +275,21 @@ def NuevaSalida2(request, pk):
         form.initial['tipo'] = True
     
     return render(request, 'core/salida_form.html', {'form':form, 'producto':producto})
+
+
+#Inventario
+
+@login_required
+def inventario(request, categoria):
+    filtro = categoria
+    categorias = Categoria.objects.all()
+    
+    if filtro == 0:
+        productos = Producto.objects.all()
+    else:
+        productos = Producto.objects.filter(categoria = filtro)
+        
+    return render(request, 'core/inventario.html', {'categorias': categorias, 'productos': productos, 'filtro':filtro})
 
 
 def Kardex(request, pk):
